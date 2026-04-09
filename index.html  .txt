@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<title>Love Game NEXT LEVEL 💖</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial;
+  text-align: center;
+  background: linear-gradient(-45deg, #ff4d6d, #ffb3c1, #ff758f, #ff8fa3);
+  background-size: 400% 400%;
+  animation: bg 6s ease infinite;
+}
+
+@keyframes bg {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+h1 {
+  margin-top: 70px;
+  color: white;
+  text-shadow: 2px 2px 10px black;
+}
+
+button {
+  padding: 15px 35px;
+  font-size: 22px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 20px;
+  transition: 0.2s;
+  position: absolute;
+}
+
+#yesBtn {
+  background: #00c851;
+  color: white;
+  left: 40%;
+  top: 55%;
+  box-shadow: 0 0 20px #00c851;
+}
+
+#noBtn {
+  background: #ff4444;
+  color: white;
+  left: 55%;
+  top: 55%;
+  box-shadow: 0 0 20px #ff4444;
+}
+
+#message {
+  position: absolute;
+  width: 100%;
+  top: 20%;
+  font-size: 28px;
+  color: white;
+  text-shadow: 2px 2px 10px black;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Erhem hundet Undral ta Orgild chin setgeleese hairtai yu? 💖</h1>
+
+<button id="yesBtn">💖 Тийм</button>
+<button id="noBtn">😢 Үгүй</button>
+
+<div id="message"></div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+let yesBtn = document.getElementById("yesBtn");
+let noBtn = document.getElementById("noBtn");
+let msg = document.getElementById("message");
+
+let yesScale = 1;
+
+// 😢 NO BUTTON SMART RUNAWAY
+noBtn.addEventListener("mouseover", () => {
+  let x = Math.random() * (window.innerWidth - 150);
+  let y = Math.random() * (window.innerHeight - 150);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+
+// 💖 YES CLICK → CONFETTI
+yesBtn.onclick = () => {
+  msg.innerHTML = "💖 Би угаасаа мэдэж байсан юм шүү 😘💖";
+
+  yesScale += 0.2;
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  startConfetti();
+};
+
+// 🎉 CONFETTI
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let pieces = [];
+
+function startConfetti() {
+  for (let i = 0; i < 200; i++) {
+    pieces.push({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      vx: (Math.random() - 0.5) * 10,
+      vy: (Math.random() - 0.5) * 10,
+      alpha: 1
+    });
+  }
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  pieces.forEach((p, i) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.alpha -= 0.01;
+
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = "white";
+    ctx.fillRect(p.x, p.y, 4, 4);
+
+    if (p.alpha <= 0) pieces.splice(i, 1);
+  });
+
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
